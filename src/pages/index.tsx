@@ -1,4 +1,25 @@
+import { signIn, signOut, useSession } from 'next-auth/react'
+
 export default function Home() {
+    const { data: session } = useSession()
+
+    let display = (
+        <div>
+            Not signed in <button onClick={() => signIn()}>Sign In</button>
+        </div>
+    )
+
+    if (session) {
+        display = (
+            <div>
+                'Signed in as ' + {session.user.email}{' '}
+                <img src={session.user.image} alt="user image" />
+                <button onClick={() => signOut()}>Sign Out</button>
+            </div>
+        )
+        console.log(session)
+    }
+
     return (
         <div
             style={{
@@ -10,7 +31,7 @@ export default function Home() {
                 lineHeight: '100vh',
             }}
         >
-            MAPROJ
+            {display}
         </div>
     )
 }
